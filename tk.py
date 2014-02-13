@@ -1,20 +1,22 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 from ORM import Users, Payments, Categories
-from Tkinter import *
+from tkinter import  simpledialog, messagebox, Label, Frame, Toplevel, Entry, LEFT, RIGHT, BOTH, TOP, BOTTOM, Button, \
+    GROOVE, YES, Menu, Scrollbar, VERTICAL, SUNKEN, W, X, Y, Tk
+
 from ttk import Combobox, Treeview
-import tkMessageBox
-import tkSimpleDialog
+#import tkMageBox
+#import tkSimpleDialog
 import datetime
 
 user = Users()
 payments = Payments()
 categories = Categories()
 
-class authWindow(tkSimpleDialog.Dialog):
+class authWindow(simpledialog.Dialog):
 	def body(self,parent):
 		self.title("SignIn")
 		self.geometry("250x115+400+300")
+
 
 		Label(parent, text='Enter your name and login').grid(row=0, columnspan=2)
 		Label(parent, text='Username: ').grid(row=1)
@@ -30,8 +32,8 @@ class authWindow(tkSimpleDialog.Dialog):
 		try:
 			user.getUser(name=self.username.get(),password=self.pwd.get())
 			self.parent.status.set("%s",user.name)
-		except Exception,e:
-			tkMessageBox.showerror(title='Error', message=e)
+		except Exception as e:
+			messagebox.showerror(title='Error', message=e)
 
 class Statistics(Toplevel):	
 	def __init__(self,parent):
@@ -240,7 +242,7 @@ class MyGUI(Frame):
 		pass
 		
 	def reply(self,text):
-		tkMessageBox.showinfo(title='popup', message=user.name)
+		messagebox.showinfo(title='popup', message=user.name)
 
 if __name__=='__main__':
 	root = Tk()

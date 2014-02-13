@@ -35,10 +35,10 @@ class Users:
 			self.password = pw
 			conn.commit()
 			
-		except sqlite3.Error,e:
-			print e
-		except Exception,e:
-			print e
+		except sqlite3.Error as e:
+			print (e)
+		except Exception as e:
+			print (e)
 		finally:
 			if conn:
 				conn.close()
@@ -57,8 +57,8 @@ class Users:
 				self.password = tmpU[2]
 			else:
 				raise Exception("bad username or password")
-		except sqlite3.Error,e:
-			print e
+		except sqlite3.Error as e:
+			print (e)
 		finally:
 			if conn:
 				conn.close()
@@ -90,8 +90,8 @@ class Payments:
 				conn.commit()
 				pl.append({'id':curs.lastrowid,'summ':dataTuple[0],'comment':dataTuple[1],'date':dataTuple[2],'mul':dataTuple[3],'fk_c2u':dataTuple[4]})
 			self.paymetsList = pl	
-		except sqlite3.Error,e:
-			print e
+		except sqlite3.Error as e:
+			print(e)
 		finally:
 			if conn:
 				conn.close()
@@ -104,8 +104,8 @@ class Payments:
 			curs.execute("SELECT p.id, p.summ, comment, date, mul,fk_c2u,c.title from payments p, categories c where fk_c2u in (select id from c2u where fk_user = ? and c.id = fk_category)",(userId,))
 			dataList = curs.fetchall()
 			self.paymetsList = fillPaymentsList(dataList)
-		except sqlite3.Error,e:
-			print e
+		except sqlite3.Error as e:
+			print(e)
 		finally:
 			if conn:
 				conn.close()
@@ -117,8 +117,8 @@ class Payments:
 			curs.execute("SELECT p.id, p.summ, comment, date, mul,fk_c2u,c.title from payments p, categories c where (fk_c2u in (select id from c2u where fk_user = ? and c.id = fk_category)) and (date between  ? and ? ) and (1=1) order by date desc",(userId,dateRange,datetime.date.today()))
 			dataList = curs.fetchall()
 			self.paymetsList = fillPaymentsList(dataList)
-		except sqlite3.Error,e:
-			print e
+		except sqlite3.Error as e:
+			print(e)
 		finally:
 			if conn:
 				conn.close()
@@ -152,13 +152,13 @@ class Categories:
 					self.title = title.decode('utf-8').capitalize()
 					curs.execute("INSERT INTO c2u(fk_user,fk_category) VALUES(?,?)",(userId,self.id))
 					conn.commit()
-			except sqlite3.Error,e:
-				print e
+			except sqlite3.Error as e:
+				print(e)
 			finally:
 				if conn:
 					conn.close()
 		else:
-			print "Bad title or not user"
+			print ("Bad title or not user")
 		
 	def getCategoriesAll(self, userId):
 		try:
@@ -171,8 +171,8 @@ class Categories:
 			for data in dataList:
 				cl.append({'id':data[0],'title':data[1]})
 			self.categoriesList = cl
-		except sqlite3.Error,e:
-			print e
+		except sqlite3.Error as e:
+			print(e)
 		finally:
 			if conn:
 				conn.close()
@@ -189,8 +189,8 @@ class Categories:
 			
 			self.categoriesList = [{'id':dataList[0],'title':dataList[1]}]
 			
-		except sqlite3.Error,e:
-			print e
+		except sqlite3.Error as e:
+			print(e)
 		finally:
 			if conn:
 				conn.close()
@@ -204,7 +204,7 @@ if __name__ == "__main__":
 	p.getPaymentsWithCategory(u.id)
 	#ls = [l for l in p.paymetsList if l['id']==1]
 	for row in p.paymetsList: 
-		print len(row)
+		print (len(row))
 	
 	#p.getPaymentsList(u.id)
 	#c = Categories()
